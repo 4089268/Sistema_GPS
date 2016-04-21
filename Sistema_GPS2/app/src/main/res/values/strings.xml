@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Sistema_GPS</string>
+
+    <string name="title_activity_conf">Configuracion</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_password">Password</string>
+    <string name="prompt_account">Account</string>
+    <string name="action_sign_in">Sign in</string>
+
+</resources>
