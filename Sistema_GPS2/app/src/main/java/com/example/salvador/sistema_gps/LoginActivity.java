@@ -3,7 +3,10 @@ package com.example.salvador.sistema_gps;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -37,17 +40,30 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements OnClickListener {
 
+    private Button btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
+        btn = (Button)findViewById(R.id.signinbtn);
+        btn.setOnClickListener(this);
 
     }
 
 
+    @Override
+    public void onClick(View v) {
+        ProgressDialog dialogo = new ProgressDialog(LoginActivity.this);
+        dialogo.setMessage("CargandoDatos");
+        dialogo.setIndeterminate(false);
+        dialogo.setCancelable(false);
+        dialogo.show();
+        Intent i = new Intent(this, ConfActivity.class);
+        startActivity(i);
+        dialogo.dismiss();
+    }
 }
 

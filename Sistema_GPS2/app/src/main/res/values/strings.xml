@@ -8,5 +8,9 @@
     <string name="prompt_password">Password</string>
     <string name="prompt_account">Account</string>
     <string name="action_sign_in">Sign in</string>
+    <string name="conf_btn">Editar Configuracion</string>
+    <string name="conf_btn_desc">Permite Editar la configuracion de la aplicacion</string>
+    <string name="guardar_btn">Guardar</string>
+    <string name="cancelar_btn">Cancelar</string>
 
 </resources>
