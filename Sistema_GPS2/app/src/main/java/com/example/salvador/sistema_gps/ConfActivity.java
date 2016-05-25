@@ -2,18 +2,24 @@ package com.example.salvador.sistema_gps;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
+import android.widget.Spinner;
 import android.widget.ToggleButton;
 
 public class ConfActivity extends AppCompatActivity {
 
-    EditText ip1oct,ip2oct,ip3oct,ip4oct,minutos,identificador,transaccion,estado;
-
+    EditText ip1oct,ip2oct,ip3oct,ip4oct,minutos,transaccion,estado;
     Button config,guardar,cancelar;
+    Spinner camiones_lst;
     ToggleButton servicio_btn;
+
+    String[] datos = {"Camion1","Camion2","Camion3","Camion4"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +36,11 @@ public class ConfActivity extends AppCompatActivity {
         ip3oct = (EditText)findViewById(R.id.ip3);
         ip4oct = (EditText)findViewById(R.id.ip4);
         minutos =(EditText)findViewById(R.id.mints);
-        identificador = (EditText)findViewById(R.id.ident);
+        camiones_lst = (Spinner) findViewById(R.id.lista_camiones);
         transaccion = (EditText)findViewById(R.id.transac);
         estado = (EditText)findViewById(R.id.estado);
+
+        camiones_lst.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,datos));
 
         config= (Button)findViewById(R.id.config);
         guardar=(Button)findViewById(R.id.btn_guardar);
@@ -40,6 +48,7 @@ public class ConfActivity extends AppCompatActivity {
 
         servicio_btn = (ToggleButton) findViewById(R.id.btn_serv);
         activarElementos(false);
+
 
         config.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +115,7 @@ public class ConfActivity extends AppCompatActivity {
         ip3oct.setEnabled(x);
         ip4oct.setEnabled(x);
         minutos.setEnabled(x);
-        identificador.setEnabled(x);
+        camiones_lst.setEnabled(x);
         transaccion.setEnabled(x);
         estado.setEnabled(x);
 

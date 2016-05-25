@@ -15,11 +15,12 @@ import java.io.IOException;
  */
 public class ConexionServicioWeb {
 
+
     private static String url;
     private static  String suburl = "/SistemaRastreoGPS/Service.asmx?WSDL";
-    private static  String namespace = "salvador.org";
+    private static  String namespace = "www.salvador.org";
 
-    private static  String accionSoap = "salvador.org/nuevaReservacion";
+    private static  String accionSoap1 = "www.salvador.org/AgregarCoordenadas";
 
     private static  String metodo1 = "AgregarCoordenadas";
     private static  String metodo2 = "ObtnerCamiones";
@@ -30,7 +31,7 @@ public class ConexionServicioWeb {
 
     }
 
-    public void AgregarCoordenadas(String altitud, String longitud, int hora, int minuto,int dia, int mes, int ano, int idcamion, int transac){
+    public Boolean AgregarCoordenadas(String altitud, String longitud, int hora, int minuto,int dia, int mes, int ano, int idcamion, int transac){
 
         try {
             SoapObject request = new SoapObject(namespace, metodo1);
@@ -48,9 +49,12 @@ public class ConexionServicioWeb {
             request.addProperty("n_transacc", transac);
 
             HttpTransportSE transporte = new HttpTransportSE(url);
-            transporte.call(accionSoap, sobre);
+            transporte.call(accionSoap1, sobre);
 
-        }catch (IOException e) {} catch (XmlPullParserException e) {}
+            return true;
+
+        }catch (IOException e) {return false;} catch (XmlPullParserException e) {return false;}
+
 
     }
 
