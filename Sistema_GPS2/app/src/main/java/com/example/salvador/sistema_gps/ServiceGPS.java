@@ -5,30 +5,33 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.LocationListener;
 import android.location.LocationManager;
-import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
+
+import java.nio.BufferUnderflowException;
 
 /**
  * Created by Salvador on 18/05/2016.
  */
 
 public class ServiceGPS extends Service {
-    MediaPlayer reproductor;
     LocationManager locmanger;
     MyLocationListener loclist;
 
     ConexionServicioWeb x;
 
     String latitud, longitud;
+    String ip;
+    int camion,trans;
 
 
     @Override
     public void onCreate() {
+
         locmanger = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         loclist = new MyLocationListener(this);
 
@@ -44,22 +47,22 @@ public class ServiceGPS extends Service {
         }
         locmanger.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, loclist);
 
-        reproductor = MediaPlayer.create(this, R.raw.audio);
 
-        x= new ConexionServicioWeb(192,168,173,1);
+        x= new ConexionServicioWeb("192.168.173.1");
 
         super.onCreate();
     }
 
+
+
     @Override
     public int onStartCommand(Intent intenc, int flags, int idArranque) {
-        reproductor.start();
+
         return START_STICKY;
     }
 
     @Override
     public void onDestroy(){
-        reproductor.stop();
         super.onDestroy();
     }
 
@@ -86,7 +89,6 @@ public class ServiceGPS extends Service {
         @Override
         protected void onPreExecute() {
             //super.onPreExecute();
-
         }
 
         @Override

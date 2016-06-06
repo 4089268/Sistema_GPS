@@ -9,12 +9,12 @@ import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by Salvador on 11/05/2016.
  */
 public class ConexionServicioWeb {
-
 
     private static String url;
     private static  String suburl = "/SistemaRastreoGPS/Service.asmx?WSDL";
@@ -26,8 +26,8 @@ public class ConexionServicioWeb {
     private static  String metodo2 = "ObtnerCamiones";
     private static  String metodo3 = "ObtnerUltimaTransacc";
 
-    public ConexionServicioWeb(int ip1, int ip2, int ip3, int ip4) {
-        url = "http://"+ip1+"."+ip2+"."+ip3+"."+ip4+suburl;
+    public ConexionServicioWeb(String ip) {
+        url = "http://"+ip+suburl;
 
     }
 
@@ -56,6 +56,37 @@ public class ConexionServicioWeb {
         }catch (IOException e) {return false;} catch (XmlPullParserException e) {return false;}
 
 
+    }
+
+    public String[] ObtenerCamiones(){
+        String[] camiones ;
+
+        try {
+            SoapObject request = new SoapObject(namespace, metodo2);
+            SoapSerializationEnvelope sobre = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+            sobre.dotNet = true;
+            sobre.setOutputSoapObject(request);
+
+            HttpTransportSE transporte = new HttpTransportSE(url);
+            transporte.call(accionSoap1, sobre);
+
+            SoapObject respuesta = (SoapObject)sobre.getResponse();
+            camiones = new String[respuesta.getPropertyCount()];
+
+            for(int i =0; i<camiones.length;i++){
+                camiones[i] = respuesta.getProperty(i).toString();
+            }
+
+
+        }catch (IOException e) {return null;} catch (XmlPullParserException e) {return null;}
+
+        return camiones;
+    }
+
+    public int ObtenerUltimaTrans(int id_camion){
+        int x = -1;
+
+        return x;
     }
 
 }
