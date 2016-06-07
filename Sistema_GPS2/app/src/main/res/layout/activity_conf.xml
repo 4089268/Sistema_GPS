@@ -13,54 +13,6 @@
     android:background="@mipmap/fondo2">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="10sp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ip del Servidor :"
-            android:textSize="15dp"
-            android:textColor="#444444"
-            android:paddingRight="10dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical|right">
-
-            <EditText
-                style="@style/edit_text1"
-                android:inputType="number"
-                android:hint="192"
-                android:id="@+id/ip1"/>
-
-            <EditText
-                style="@style/edit_text1"
-                android:inputType="number"
-                android:hint="168"
-                android:id="@+id/ip2"/>
-
-            <EditText
-                style="@style/edit_text1"
-                android:inputType="number"
-                android:hint="1"
-                android:id="@+id/ip3"/>
-
-            <EditText
-                style="@style/edit_text1"
-                android:inputType="number"
-                android:hint="254"
-                android:id="@+id/ip4"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="10sp"
@@ -116,7 +68,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Numero Transaccion"
+            android:text="Numero de Viajes: "
             android:textSize="15dp"
             android:textColor="#444444"
             android:paddingRight="10sp"
@@ -128,32 +80,6 @@
             android:layout_width="wrap_content"
             android:editable="false"
             android:id="@+id/transac"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="10sp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Estado"
-            android:textSize="15dp"
-            android:textColor="#444444"
-            android:paddingRight="10sp"
-            />
-
-        <EditText
-            style="@style/edit_text1"
-            android:hint="estado"
-            android:layout_width="wrap_content"
-            android:maxLines="3"
-            android:id="@+id/estado"/>
-
-
 
     </LinearLayout>
 

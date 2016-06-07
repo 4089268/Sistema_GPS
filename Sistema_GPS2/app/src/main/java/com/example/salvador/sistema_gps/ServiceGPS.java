@@ -48,7 +48,7 @@ public class ServiceGPS extends Service {
         locmanger.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, loclist);
 
 
-        x= new ConexionServicioWeb("192.168.173.1");
+        x= new ConexionServicioWeb();
 
         super.onCreate();
     }

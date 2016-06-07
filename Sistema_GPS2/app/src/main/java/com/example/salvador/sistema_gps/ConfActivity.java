@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,13 +18,13 @@ import android.widget.ToggleButton;
 
 public class ConfActivity extends AppCompatActivity {
 
-    EditText ip1oct,ip2oct,ip3oct,ip4oct,minutos,transaccion,estado;
+    EditText minutos,transaccion;
     Button config,guardar,cancelar;
     Spinner camiones_lst;
     ToggleButton servicio_btn;
 
     ConexionServicioWeb con;
-    private ProgressDialog dialogo;
+    ProgressDialog dialogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +40,10 @@ public class ConfActivity extends AppCompatActivity {
     }
 
     private void inicializarElementos(){
-        ip1oct = (EditText)findViewById(R.id.ip1);
-        ip2oct = (EditText)findViewById(R.id.ip2);
-        ip3oct = (EditText)findViewById(R.id.ip3);
-        ip4oct = (EditText)findViewById(R.id.ip4);
+
         minutos =(EditText)findViewById(R.id.mints);
         camiones_lst = (Spinner) findViewById(R.id.lista_camiones);
         transaccion = (EditText)findViewById(R.id.transac);
-        estado = (EditText)findViewById(R.id.estado);
 
         config= (Button)findViewById(R.id.config);
         guardar=(Button)findViewById(R.id.btn_guardar);
@@ -81,9 +78,22 @@ public class ConfActivity extends AppCompatActivity {
             }
         });
 
-        con = new ConexionServicioWeb("192.168.173.1");
-        mostrarMensaje("hola");
+        con = new ConexionServicioWeb();
         new asyResObtenerCamiones().execute();
+
+        transaccion.setText("1");
+
+        camiones_lst.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //new asyResObtenerObtenerUltTrans().execute();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
     }
 
@@ -105,19 +115,6 @@ public class ConfActivity extends AppCompatActivity {
 
     private Boolean elementosOk(){
         Boolean ok = true;
-
-        if(ip1oct.getText() != null && ip1oct.getText().toString() != " "){
-            ok = false;
-        }
-        if(ip2oct.getText() != null && ip2oct.getText().toString() != " " && ok){
-            ok = false;
-        }
-        if(ip3oct.getText() != null && ip3oct.getText().toString() != " " && ok){
-            ok = false;
-        }
-        if(ip4oct.getText() != null && ip4oct.getText().toString() != " " && ok){
-            ok = false;
-        }
         if(minutos.getText() != null && minutos.getText().toString() != " " && ok){
             ok = false;
         }
@@ -147,14 +144,9 @@ public class ConfActivity extends AppCompatActivity {
     }
 
     private void activarElementos(Boolean x){
-        ip1oct.setEnabled(x);
-        ip2oct.setEnabled(x);
-        ip3oct.setEnabled(x);
-        ip4oct.setEnabled(x);
         minutos.setEnabled(x);
         camiones_lst.setEnabled(x);
         transaccion.setEnabled(x);
-        estado.setEnabled(x);
 
         guardar.setEnabled(x);
         cancelar.setEnabled(x);
@@ -170,18 +162,33 @@ public class ConfActivity extends AppCompatActivity {
 
     }
 
+    private int obtenerViaje(){
+        int r = con.ObtenerUltimaTrans(Integer.parseInt(camiones_lst.getSelectedItem().toString()));
+        try{
+            if (r != -1){
+                transaccion.setText(""+r);
+            }
+        }
+        catch (Exception e){};
+        return r;
+    }
 
     public void mostrarMensaje(String texto){
         Toast.makeText(this,texto, Toast.LENGTH_SHORT).show();
 
     }
 
+
+
+
+
+
     class asyResObtenerCamiones extends AsyncTask<String,String,String> {
         @Override
 
         protected void onPreExecute() {
             dialogo = new ProgressDialog(ConfActivity.this);
-            dialogo.setMessage("Cargando lsita de Camiones disponibles...");
+            dialogo.setMessage("Cargando datos...");
             dialogo.setIndeterminate(false);
             dialogo.setCancelable(false);
             dialogo.show();
@@ -204,11 +211,9 @@ public class ConfActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             //super.onPostExecute(s);
             dialogo.dismiss();
-            if(s.equals("ok")){
-                mostrarMensaje("CoordenadasOk");
+            if(s.equals("err")){
+                mostrarMensaje("Error al cargar lista de camiones");
 
-            }else {
-                mostrarMensaje("Error mostrar coordenadas");
             }
 
         }
@@ -219,7 +224,7 @@ public class ConfActivity extends AppCompatActivity {
         protected void onPreExecute() {
             //super.onPreExecute();
             dialogo = new ProgressDialog(ConfActivity.this);
-            dialogo.setMessage("Cargando lsita de Camiones disponibles...");
+            dialogo.setMessage("Cargando viajes...");
             dialogo.setIndeterminate(false);
             dialogo.setCancelable(false);
             dialogo.show();
@@ -227,12 +232,9 @@ public class ConfActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-
-            String [] c = con.ObtenerCamiones();
-            if (c != null){
-                cargarListaCamiones(c);
+            if (obtenerViaje() != -1 ){
                 return "ok";
-            }else{
+            }else {
                 return "err";
             }
 
@@ -242,13 +244,10 @@ public class ConfActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             //super.onPostExecute(s);
             dialogo.dismiss();
-            if(s.equals("ok")){
-                mostrarMensaje("CoordenadasOk");
 
-            }else {
-                mostrarMensaje("Error mostrar coordenadas");
+            if(s.equals("err")){
+                mostrarMensaje("Error cargar ultimo viaje...");
             }
-
         }
     }
 

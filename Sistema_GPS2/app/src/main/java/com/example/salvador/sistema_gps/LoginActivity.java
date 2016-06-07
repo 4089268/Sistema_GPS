@@ -31,6 +31,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,9 @@ import static android.Manifest.permission.READ_CONTACTS;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements OnClickListener {
+    EditText acount,pass;
+    ConexionServicioWeb con;
+    private ProgressDialog dialogo;
 
     private Button btn;
     @Override
@@ -51,19 +55,80 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
         btn = (Button)findViewById(R.id.signinbtn);
         btn.setOnClickListener(this);
 
-    }
+        acount = (EditText)findViewById(R.id.edt_acccnt);
+        pass = (EditText)findViewById(R.id.adt_pass);
 
+    }
 
     @Override
     public void onClick(View v) {
-        ProgressDialog dialogo = new ProgressDialog(LoginActivity.this);
-        dialogo.setMessage("CargandoDatos");
-        dialogo.setIndeterminate(false);
-        dialogo.setCancelable(false);
-        dialogo.show();
+
+        if (!acount.getText().toString().equals("") && !pass.getText().toString().equals("")) {
+
+            new asyRes().execute();
+        }else{
+            mostrarMensaje("Faltan datos...");
+        }
+
+    }
+
+
+    private int ComprobarUsuario(){
+
+        con = new ConexionServicioWeb();
+        int res = con.VerificarUsuario(acount.getText().toString(), Integer.parseInt(pass.getText().toString()));
+        return res;
+    }
+    private void iniciarApp(){
         Intent i = new Intent(this, ConfActivity.class);
         startActivity(i);
-        dialogo.dismiss();
     }
+
+
+    public void mostrarMensaje(String texto){
+        Toast.makeText(this,texto, Toast.LENGTH_SHORT).show();
+
+    }
+
+
+    class asyRes extends AsyncTask<String,String,String> {
+        @Override
+        protected void onPreExecute() {
+            //super.onPreExecute();
+            dialogo = new ProgressDialog(LoginActivity.this);
+            dialogo.setMessage("Comprobando Datos...");
+            dialogo.setIndeterminate(false);
+            dialogo.setCancelable(false);
+            dialogo.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            if (ComprobarUsuario()== 1){
+                return "ok";
+            }else{
+                return "err";
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            //super.onPostExecute(s);
+            dialogo.dismiss();
+            if (s.equals("ok")){
+                iniciarApp();
+            }else {
+                mostrarMensaje("Usuario y/o contraseña incorrectos");
+            }
+
+
+
+        }
+
+    }
+
+
 }
 
